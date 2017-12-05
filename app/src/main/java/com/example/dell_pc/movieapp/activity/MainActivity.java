@@ -3,6 +3,8 @@ package com.example.dell_pc.movieapp.activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.telecom.Call;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.dell_pc.movieapp.R;
+import com.example.dell_pc.movieapp.adapter.MoviesAdapter;
 import com.example.dell_pc.movieapp.model.Movie;
 import com.example.dell_pc.movieapp.model.MoviesResponse;
 import com.example.dell_pc.movieapp.rest.ApiClient;
@@ -49,6 +52,9 @@ public class MainActivity extends AppCompatActivity
             return;
         }
 
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.movies_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
 
@@ -56,8 +62,9 @@ public class MainActivity extends AppCompatActivity
         call.enqueue(new Callback<MoviesResponse>() {
             @Override
             public void onResponse(retrofit2.Call<MoviesResponse>call, Response<MoviesResponse> response) {
+                int statusCode = response.code();
                 List<Movie> movies = response.body().getResults();
-                Log.d(TAG, "Number of movies received: " + movies.size());
+                recyclerView.setAdapter(new MoviesAdapter(movies, R.layout.list_item_movie, getApplicationContext()));
             }
 
             @Override
