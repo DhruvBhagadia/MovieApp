@@ -2,13 +2,17 @@ package com.example.dell_pc.movieapp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.bumptech.glide.Glide;
 import com.example.dell_pc.movieapp.R;
 import com.example.dell_pc.movieapp.model.Movie;
 
@@ -23,6 +27,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     private List<Movie> movies;
     private int rowLayout;
     private Context context;
+    private String url = "https://image.tmdb.org/t/p/w500";
 
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
 
@@ -31,6 +36,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         TextView data;
         TextView movieDescription;
         TextView rating;
+        ImageView poster;
 
         public MovieViewHolder (View v) {
 
@@ -40,6 +46,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             data = (TextView) v.findViewById(R.id.subtitle);
             movieDescription = (TextView) v.findViewById(R.id.description);
             rating = (TextView) v.findViewById(R.id.rating);
+            poster = (ImageView) v.findViewById(R.id.poster);
 
             v.setClickable(true);
             v.setFocusableInTouchMode(true);
@@ -83,7 +90,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         holder.data.setText(movies.get(position).getReleaseDate());
         holder.movieDescription.setText(movies.get(position).getOverview());
         holder.rating.setText(movies.get(position).getVoteAverage().toString());
-    }
+        Log.i("info", movies.get(position).getPosterPath());
+        Glide.with(context).load(url + movies.get(position).getPosterPath()).into(holder.poster);    }
 
     @Override
     public int getItemCount() {
@@ -92,4 +100,4 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
 
 
-}
+            }
