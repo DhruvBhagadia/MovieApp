@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dell_pc.movieapp.R;
 import com.example.dell_pc.movieapp.model.Movie;
@@ -39,6 +40,27 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             data = (TextView) v.findViewById(R.id.subtitle);
             movieDescription = (TextView) v.findViewById(R.id.description);
             rating = (TextView) v.findViewById(R.id.rating);
+
+            v.setClickable(true);
+            v.setFocusableInTouchMode(true);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Toast.makeText(itemView.getContext(),"CLICKED!", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            moviesLayout.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+
+                    Toast.makeText(itemView.getContext(), "Position: " + Integer.toString(getAdapterPosition()), Toast.LENGTH_LONG).show();
+                }
+
+            });
 
         }
     }

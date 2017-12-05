@@ -1,5 +1,6 @@
 package com.example.dell_pc.movieapp.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private final static String API_KEY = "9f02237c2772e69944b57b1abf4b9088";
+    static View.OnClickListener myOnClickListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        myOnClickListener = new MyOnClickListener(this);
+
 
         //main code starts
 
@@ -60,14 +64,14 @@ public class MainActivity extends AppCompatActivity
         retrofit2.Call<MoviesResponse> call = apiService.getTopRatedMovies(API_KEY);
         call.enqueue(new Callback<MoviesResponse>() {
             @Override
-            public void onResponse(retrofit2.Call<MoviesResponse>call, Response<MoviesResponse> response) {
+            public void onResponse(retrofit2.Call<MoviesResponse> call, Response<MoviesResponse> response) {
                 int statusCode = response.code();
                 List<Movie> movies = response.body().getResults();
                 recyclerView.setAdapter(new MoviesAdapter(movies, R.layout.list_item_movie, getApplicationContext()));
             }
 
             @Override
-            public void onFailure(retrofit2.Call<MoviesResponse>call, Throwable t) {
+            public void onFailure(retrofit2.Call<MoviesResponse> call, Throwable t) {
                 Log.e(TAG, t.toString());
             }
         });
@@ -95,6 +99,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
 
     @Override
     public void onBackPressed() {
@@ -151,5 +156,20 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private static class MyOnClickListener implements View.OnClickListener {
+
+        private final Context context;
+
+        private MyOnClickListener(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Log.e(TAG,"CLICKED!");
+        }
+
     }
 }
